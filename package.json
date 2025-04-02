@@ -1,14 +1,18 @@
 {
-  "name": "sword",
+  "name": "swords-and-sorcery",
   "version": "1.0.0",
-  "description": "",
+  "description": "An AI powered text adventure",
+  "private": true,
   "main": "index.js",
   "scripts": {
-    "dev:client": "npm run dev --workspace client"
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Jim Johnson <jim@jimjohnson.dev>",
+  "license": "MIT",
   "type": "commonjs",
   "workspaces": [
     "packages/client",
