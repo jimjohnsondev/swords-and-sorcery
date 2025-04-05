@@ -10,10 +10,12 @@ interface IMessage {
 export class Chat {
   #anthropic: Anthropic;
   #systemPrompt: string;
+  #messages: MessageParam[];
 
   constructor(systemPrompt: string) {
     this.#systemPrompt = systemPrompt;
     this.#anthropic = new Anthropic();
+    this.#messages = [];
   }
 
   async send(message: IMessage): Promise<IMessage> {
@@ -41,14 +43,17 @@ export class Chat {
       ],
     };
 
+    this.#messages.push(claudMessage);
+
     const reply = await this.#anthropic.messages.create({
       model: 'claude-3-7-sonnet-20250219',
       max_tokens: 1000,
       temperature: 1,
       system: this.#systemPrompt,
-      messages: [claudMessage],
+      messages: this.#messages,
     });
-    const replyText = (reply.content?.[0] as unknown as any).text;
+    this.#messages.push({ role: reply.role, content: reply.content });
+    const replyText = (reply.content[0] as unknown as any).text;
 
     return {
       role: 'game-master',
